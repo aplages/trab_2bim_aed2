@@ -19,7 +19,7 @@ class ListaDuplamenteEncadeada:
     # Você deve obrigatoriamente implementar as seguintes funções:
     
     
-    def inserir_no_inicio(self, valor) # iterativo
+    def inserir_no_inicio(self, valor): # Iterativo
         """
             Insere um novo elemento no começo da lista,
             reajustando adequadamente os ponteiros inicio e
@@ -27,14 +27,14 @@ class ListaDuplamenteEncadeada:
         """
         pass
 
-    def inserir_no_fim(self, valor): # público
+    def inserir_no_fim(self, valor): # Público
         """
             Método que dispara a inserção recursiva no fim.
             Trata o caso especial de a lista estar vazia.
         """
         pass
 
-    def inserir_no_fim_recursivo_aux(self, no_atual, novo_no): # Privado / Auxiliar
+    def __inserir_no_fim_recursivo_aux(self, no_atual, novo_no): # Privado / Auxiliar
         """
             Percorre a lista até encontrar o final (None).
             Insere o novo_no, ajusta o ponteiro anterior dele e
@@ -50,7 +50,7 @@ class ListaDuplamenteEncadeada:
         """
         pass
 
-    def inserir_no_meio_recursivo_aux(self, no_atual, indice_atual, indice_alvo): # Privado/Auxiliar, obrigat. Recursivo
+    def __inserir_no_meio_recursivo_aux(self, no_atual, indice_atual, indice_alvo): # Privado/Auxiliar, RECURSIVO
         """
             Percorre a lista
             incrementando o indice_atual de forma recursiva até encontrar a posição correta
@@ -74,7 +74,7 @@ class ListaDuplamenteEncadeada:
         """
         pass
 
-    def remover_recursivo_aux(self, no_atual, valor): # Privador/Auxiliar - obrigat. Recursivo
+    def __remover_recursivo_aux(self, no_atual, valor): # Privado/Auxiliar - RECURSIVO
         """
             Percorre a lista de forma recursiva, localiza e remove todas as ocorrências do valor.
             Deve garantir que os ponteiros anterior e proximo dos nós vizinhos
@@ -89,7 +89,7 @@ class ListaDuplamenteEncadeada:
         """
         pass
 
-    def insercao_recursiva(self, no_atual): # Privado/Auxiliar - obrigat. RECURSIVO
+    def __insercao_recursiva(self, no_atual): # Privado/Auxiliar - RECURSIVO
         """
             Funciona como o laço externo do Insertion Sort. Visita cada nó da
             lista (da esquerda para a direita), desconecta-o temporariamente e chama a função
@@ -97,9 +97,10 @@ class ListaDuplamenteEncadeada:
         """
         pass
 
-    def inserir_ordenado_recursivo(self, no_lista, novo_no): # Privado/Auxiliar - obrigat. RECURSIVO
+    def __inserir_ordenado_recursivo(self, no_lista, novo_no): # Privado/Auxiliar - RECURSIVO
         """
             Funciona como o laço interno do Insertion Sort.
             Procura recursivamente a posição correta para o novo_no dentro da
             sublista já ordenada e faz as amarrações dos ponteiros.
         """
+        pass
