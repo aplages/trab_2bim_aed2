@@ -1,5 +1,3 @@
-# from random import randint
-
 class No:
     # Deve conter três atributos:
         # • dado: O valor armazenado (inteiro)
@@ -171,8 +169,9 @@ class ListaDuplamenteEncadeada:
 
     def exibir_lista(self): # iterativo ou recursivo
         """
-            Imprime os elementos da lista do início
-            ao fim (exemplo visual: 1 <-> 2 <-> 3)
+            Imprime os elementos da lista do início ao fim de forma detalhada\n
+            Depois mostra a lista bonita (exemplo visual: 1 <-> 2 <-> 3)
+
         """
         if self.isVazia():
             return "Lista Vazia"
@@ -190,6 +189,8 @@ class ListaDuplamenteEncadeada:
         else:
             print(None)
             print()
+
+        self.__exibir_bonitinho(self.ini)
         print('\n-============ Fim =============-\n')
 
 
@@ -199,13 +200,26 @@ class ListaDuplamenteEncadeada:
             recebe um No como parêmetro
         """
         if nodo != None:
-
             if nodo == self.fim:
                 print('\nFim:')
             nodo.exibirse()
             if (nodo.proximo != None):
                 self.__exibir_auxiliar(nodo.proximo)
 
+    def __exibir_bonitinho(self, no):
+        """
+            Exibe a lista de forma visualmente bonita
+            Ex: ] 1 ⇄ 2 ⇄ 3 [
+            Já parte do principio de que a lista não é vazia, etc. (todas verificações foram feitas anteriormente)
+        """
+        if no == self.ini:
+            print('\n[', end=" ")
+        print(no.dado, end=" ")
+        if no.proximo != None:
+            print('⇄', end=" ")
+            self.__exibir_bonitinho(no.proximo)
+        else:
+            print(']')
 
     def remover_todos(self, valor): # Público
         """
@@ -304,7 +318,7 @@ class ListaDuplamenteEncadeada:
 
 ### Testes
 
-teste = ListaDuplamenteEncadeada()
+# teste = ListaDuplamenteEncadeada()
 #print(teste.isVazia())
 '''
 teste.inserir_no_fim('teste_fim_vazio')
@@ -357,11 +371,12 @@ print('--')
 teste.exibir_lista()
 '''
 
+
 '''
 #    Teste de ordenação
 n = 0
 for i in range(8):
-    n = randint(0, 8)
+    n = n+1
     teste.inserir_no_inicio(n)
 #teste.inserir_no_fim(0)
 
