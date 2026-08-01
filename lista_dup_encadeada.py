@@ -1,3 +1,14 @@
+def escreve_menu():
+    print('\n=== MENU LISTA DUPLAMENTE ENCADEADA ===\n' \
+    '1. Inserir elemento no início\n' \
+    '2. Inserir elemento no fim (Recursivo)\n' \
+    '3. Inserir elemento no meio (por índice - Recursivo)\n' \
+    '4. Remover todas as ocorrências de um valor (Recursivo)\n' \
+    '5. Ordenar a lista com Insertion Sort (Recursivo)\n' \
+    '6. Exibir lista\n' \
+    '0. Sair\n' \
+    'Digite sua opção:', end='\t')
+
 class No:
     # Deve conter três atributos:
         # • dado: O valor armazenado (inteiro)
@@ -32,6 +43,7 @@ class ListaDuplamenteEncadeada:
         self.ini = None
         self.fim = None
 
+
     def isVazia(self) -> bool:
         """
             Se for Vazia retorna True
@@ -39,7 +51,7 @@ class ListaDuplamenteEncadeada:
         """
         return self.ini == None # Se ini == None, retorna True; caso contrário, retorna False
 
-    
+
     ##
     # >> Você deve obrigatoriamente implementar as seguintes funções: <<
 
@@ -163,8 +175,10 @@ class ListaDuplamenteEncadeada:
                 # temp_anterior = no_atual.anterior
                 self.tam += 1
                 novo = No(valor, anterior=no_atual.anterior, proximo=no_atual)
-                novo.proximo.anterior = novo
-                novo.anterior.proximo = novo
+                if novo.proximo != None:
+                    novo.proximo.anterior = novo
+                if novo.anterior != None:
+                    novo.anterior.proximo = novo
 
 
     def exibir_lista(self): # iterativo ou recursivo
@@ -206,6 +220,7 @@ class ListaDuplamenteEncadeada:
             if (nodo.proximo != None):
                 self.__exibir_auxiliar(nodo.proximo)
 
+
     def __exibir_bonitinho(self, no):
         """
             Exibe a lista de forma visualmente bonita
@@ -220,6 +235,7 @@ class ListaDuplamenteEncadeada:
             self.__exibir_bonitinho(no.proximo)
         else:
             print(']')
+
 
     def remover_todos(self, valor): # Público
         """
@@ -267,6 +283,7 @@ class ListaDuplamenteEncadeada:
             if self.ini != None:
                 self.__insercao_recursiva(self.ini.proximo) # Chama a funcao auxiliar a partir do inicio
 
+
     def __insercao_recursiva(self, no_atual): # Privado/Auxiliar - RECURSIVO
         """
             Funciona como o laço externo do Insertion Sort. Visita cada nó da
@@ -286,6 +303,7 @@ class ListaDuplamenteEncadeada:
             self.__inserir_ordenado_recursivo(no_atual.anterior, no_atual)
         if no_atual.proximo != None:
             self.__insercao_recursiva(no_atual.proximo) # Chama a funcao auxiliar a partir do inicio
+
 
     def __inserir_ordenado_recursivo(self, no_lista, novo_no): # Privado/Auxiliar - RECURSIVO
         """
@@ -313,77 +331,41 @@ class ListaDuplamenteEncadeada:
         
 
 
+if __name__ == '__main__':
+    lista_main = ListaDuplamenteEncadeada()
+    entrada = ''
+    while True:
+        escreve_menu()
+        entrada = int(input())
+        if (entrada < 0) and (entrada > 6):
+            print('>> Input inválido.')
+        else:
+            if entrada == 0:
+                break
 
+            elif entrada == 1:
+                valor = int(input('\nDigite o valor que deseja adicionar ao inicio da lista:\t'))
+                lista_main.inserir_no_inicio(valor)
 
+            elif entrada == 2:
+                valor = int(input('\nDigite o valor que deseja adicionar ao fim da lista:\t'))
+                lista_main.inserir_no_fim(valor)
 
-### Testes
+            elif entrada == 3:
+                valor = int(input('\nDigite o valor que deseja adicionar no meio da lista:\t'))
+                indice = int(input(f'Digite o indice no qual deseja adicionar o valor {valor}:\t'))
+                lista_main.inserir_no_meio(indice, valor)
 
-# teste = ListaDuplamenteEncadeada()
-#print(teste.isVazia())
-'''
-teste.inserir_no_fim('teste_fim_vazio')
-teste.inserir_no_inicio(valor='teste')
-teste.exibir_lista()
+            elif entrada == 4:
+                valor = int(input('\nDigite o valor que deseja remover da lista:\t'))
+                lista_main.remover_todos(valor)
+                print(f'\n>> Removidas todas ocorrências do valor {valor} da lista.')
+                
+            elif entrada == 5:
+                lista_main.ordernar()
+                print('\n>> Lista Ordenada.')
 
-teste_nodo = No('teste')
+            elif entrada == 6:
+                lista_main.exibir_lista()
 
-teste2 = No('adada', anterior=teste_nodo)
-
-
-teste.inserir_no_inicio('teste_inicio')
-
-print('--')
-teste.exibir_lista()
-
-
-
-teste.inserir_no_fim('teste fim')
-print('--')
-teste.exibir_lista()
-
-
-
-teste.inserir_no_meio(indice=2, valor='teste_meio')
-
-print('--')
-teste.exibir_lista()
-
-
-teste.inserir_no_meio(indice=-1, valor='teste_meio_inicio')
-teste.inserir_no_meio(indice=2, valor='teste')
-teste.inserir_no_fim(valor='teste')
-
-print('--')
-teste.exibir_lista()
-
-#teste.remover_todos('teste')
-teste.ordernar()
-
-print('--')
-teste.exibir_lista()
-
-'''
-
-'''
-teste.inserir_no_meio(indice=3, valor='teste')
-
-print('--')
-teste.exibir_lista()
-'''
-
-
-'''
-#    Teste de ordenação
-n = 0
-for i in range(8):
-    n = n+1
-    teste.inserir_no_inicio(n)
-#teste.inserir_no_fim(0)
-
-print('--')
-teste.exibir_lista()
-
-teste.ordernar()
-print('--')
-teste.exibir_lista()
-'''
+    print('\nFim')
