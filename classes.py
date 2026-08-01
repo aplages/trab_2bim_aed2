@@ -4,27 +4,50 @@ class No:
         # • proximo: Ponteiro para o próximo nó
         # • anterior: Ponteiro para o nó anterior
 
-    def __init__(self, dado, anterior, proximo):
+    def __init__(self, dado, anterior: No | None=None, proximo: No | None=None):
         self.dado = dado
         self.anterior = anterior
         self.proximo = proximo
 
+    def exibirse(self):
+        """ Mostra o dado """
+        print(self.dado)
+
 
 
 class ListaDuplamenteEncadeada:
-    def __init__(self) -> None:
-        pass
+    """
+        Deve gerenciar os ponteiros inicio e fim.
+    """
 
-    # Deve gerenciar os ponteiros inicio e fim.
-    # Você deve obrigatoriamente implementar as seguintes funções:
+    def __init__(self):
+        self.tam = 0
+        self.ini = None
+        self.fim = None
+
+    def isVazia(self) -> bool:
+        """
+            Se for Vazia retorna True
+            \nSenão, retorna False
+        """
+        return self.ini == None # Se ini == None, retorna True; caso contrário, retorna False
+
     
-    
+    ##
+    # >> Você deve obrigatoriamente implementar as seguintes funções: <<
+
     def inserir_no_inicio(self, valor): # Iterativo
         """
             Insere um novo elemento no começo da lista,
             reajustando adequadamente os ponteiros inicio e
             o anterior do antigo primeiro nó.
         """
+
+        if self.isVazia():
+            novo = No(dado=valor)
+            self.tam += 1
+            self.ini = novo
+            self.fim = novo
         pass
 
     def inserir_no_fim(self, valor): # Público
@@ -65,7 +88,24 @@ class ListaDuplamenteEncadeada:
             Imprime os elementos da lista do início
             ao fim (exemplo visual: 1 <-> 2 <-> 3)
         """
-        pass
+        if self.isVazia():
+            return "Lista Vazia"
+
+        nodo = self.ini
+        if nodo != None:
+            nodo.exibirse()
+            if (nodo.proximo != None) and (nodo.proximo != self.ini):
+                self.__exibir_auxiliar(nodo.proximo)
+
+    def __exibir_auxiliar(self, nodo: No): # Privado
+        """
+            Auxilia recursivamente a função "exibir_lista"
+            recebe um No como parêmetro
+        """
+        if nodo != None:
+            nodo.exibirse()
+            if (nodo.proximo != None) and (nodo.proximo != self.ini):
+                self.__exibir_auxiliar(nodo.proximo)
 
     def remover_todos(self, valor): # Público
         """
@@ -84,8 +124,8 @@ class ListaDuplamenteEncadeada:
 
     def ordernar(self): # Público
         """
-            Método que dispara a ordenação por inserção. Deve
-            verificar se a lista possui menos de 2 elementos antes de começar.
+            Método que dispara a ordenação por inserção. 
+            Deve verificar se a lista possui menos de 2 elementos antes de começar.
         """
         pass
 
@@ -104,3 +144,18 @@ class ListaDuplamenteEncadeada:
             sublista já ordenada e faz as amarrações dos ponteiros.
         """
         pass
+
+
+
+
+### Testes
+
+teste = ListaDuplamenteEncadeada()
+
+print(teste.isVazia())
+teste.inserir_no_inicio(valor='teste')
+teste.exibir_lista()
+
+teste_nodo = No('teste')
+
+teste2 = No('adada', anterior=teste_nodo)
