@@ -11,7 +11,12 @@ class No:
 
     def exibirse(self):
         """ Mostra o dado """
-        print(self.dado)
+        if (self.anterior != None) and (self.proximo != None):
+            print(f'Dado: {self.dado} | Anterior: {self.anterior.dado} | Próximo: {self.proximo.dado}')
+        elif self.anterior != None:
+            print(f'Dado: {self.dado} | Anterior: {self.anterior.dado} | Próximo: None')
+        elif self.proximo != None:
+            print(f'Dado: {self.dado} | Anterior: {None} | Próximo: {self.proximo.dado}')
 
 
 
@@ -42,20 +47,58 @@ class ListaDuplamenteEncadeada:
             reajustando adequadamente os ponteiros inicio e
             o anterior do antigo primeiro nó.
         """
-
-        if self.isVazia():
-            novo = No(dado=valor)
-            self.tam += 1
+        novo = No(valor)
+        
+        if self.isVazia():  # Caso a lista seja vazia
+            self.tam = 1
             self.ini = novo
             self.fim = novo
-        pass
+        else:   # Caso a lista já contenha N itens
+            if self.ini != None:
+                self.tam += 1
+                novo_prox = self.ini
+                self.ini = novo
+                self.ini.proximo = novo_prox
+                novo_prox.anterior = self.ini
+            else:
+                print('> Erro:  self.ini = None')
 
     def inserir_no_fim(self, valor): # Público
         """
             Método que dispara a inserção recursiva no fim.
             Trata o caso especial de a lista estar vazia.
         """
-        pass
+        novo = No(valor)
+
+        if self.isVazia(): # Caso a lista seja vazia
+            self.tam = 1
+            self.ini = novo
+            self.fim = novo
+        else:   # Caso a lista já contenha N itens
+            ''' Usando apenas o ponteiro self.fim
+
+            if self.fim != None:
+                self.tam += 1
+                novo_ant = self.fim
+                self.fim = novo
+                self.fim.anterior = novo_ant
+                novo_ant.proximo = self.fim
+                
+            '''
+            # Usando recursão:
+            no_atual = self.ini
+            if no_atual == self.fim:
+                if no_atual != None:
+                    self.tam += 1
+                    novo.anterior = no_atual
+                    no_atual.proximo = novo
+                    self.fim = novo
+                else:
+                    print('> Erro:    no_atual = None')
+            else:
+                # Chama a funcao auxiliar
+                self.__inserir_no_fim_recursivo_aux(no_atual, novo)
+
 
     def __inserir_no_fim_recursivo_aux(self, no_atual, novo_no): # Privado / Auxiliar
         """
@@ -63,7 +106,19 @@ class ListaDuplamenteEncadeada:
             Insere o novo_no, ajusta o ponteiro anterior dele e
             atualiza o atributo self.fim da lista.
         """
-        pass
+
+        novo = novo_no
+        if no_atual.proximo == None:
+            if no_atual != None:
+                self.tam += 1
+                novo.anterior = no_atual
+                no_atual.proximo = novo
+                self.fim = novo
+        else:
+            no_atual = no_atual.proximo
+            # Chama a funcao auxiliar novamente
+            self.__inserir_no_fim_recursivo_aux(no_atual, novo)
+
 
     def inserir_no_meio(self, indice, valor): # Público
         """
@@ -91,11 +146,21 @@ class ListaDuplamenteEncadeada:
         if self.isVazia():
             return "Lista Vazia"
 
+        print('\n-=============================-')
+        print('>>      Exibindo Lista       <<\n')
+
         nodo = self.ini
+        print(f'Início:')
         if nodo != None:
             nodo.exibirse()
+            print()
             if (nodo.proximo != None) and (nodo.proximo != self.ini):
                 self.__exibir_auxiliar(nodo.proximo)
+        else:
+            print(None)
+            print()
+        print('\n-============ Fim =============-\n')
+
 
     def __exibir_auxiliar(self, nodo: No): # Privado
         """
@@ -103,8 +168,11 @@ class ListaDuplamenteEncadeada:
             recebe um No como parêmetro
         """
         if nodo != None:
+
+            if nodo == self.fim:
+                print('\nFim:')
             nodo.exibirse()
-            if (nodo.proximo != None) and (nodo.proximo != self.ini):
+            if (nodo.proximo != None):
                 self.__exibir_auxiliar(nodo.proximo)
 
     def remover_todos(self, valor): # Público
@@ -152,10 +220,23 @@ class ListaDuplamenteEncadeada:
 
 teste = ListaDuplamenteEncadeada()
 
-print(teste.isVazia())
+#print(teste.isVazia())
+teste.inserir_no_fim('teste_fim_vazio')
 teste.inserir_no_inicio(valor='teste')
 teste.exibir_lista()
 
 teste_nodo = No('teste')
 
 teste2 = No('adada', anterior=teste_nodo)
+
+
+teste.inserir_no_inicio('teste_inicio')
+
+print('--')
+teste.exibir_lista()
+
+
+
+teste.inserir_no_fim('teste fim')
+print('--')
+teste.exibir_lista()
