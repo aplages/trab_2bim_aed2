@@ -14,9 +14,11 @@ class No:
         if (self.anterior != None) and (self.proximo != None):
             print(f'Dado: {self.dado} | Anterior: {self.anterior.dado} | Próximo: {self.proximo.dado}')
         elif self.anterior != None:
-            print(f'Dado: {self.dado} | Anterior: {self.anterior.dado} | Próximo: None')
+            print(f'Dado: {self.dado} | Anterior: {self.anterior.dado} | Próximo: {None}')
         elif self.proximo != None:
             print(f'Dado: {self.dado} | Anterior: {None} | Próximo: {self.proximo.dado}')
+        else:
+            print(f'Dado: {self.dado} | Anterior: {None} | Próximo: {None}')
 
 
 
@@ -120,15 +122,25 @@ class ListaDuplamenteEncadeada:
             self.__inserir_no_fim_recursivo_aux(no_atual, novo)
 
 
-    def inserir_no_meio(self, indice, valor): # Público
+    def inserir_no_meio(self, indice: int, valor): # Público
         """
             Método que recebe um índice (posição baseada em 0) 
             e dispara a função recursiva de inserção na posição correspondente.
             Se o índice for menor ou igual a 0, direciona para o início.
         """
-        pass
+        
+        if self.isVazia(): # Cria uma independente do indice
+            novo = No(valor)
+            self.tam = 1
+            self.ini = novo
+            self.fim = novo
+        elif indice <= 0:
+            self.inserir_no_inicio(valor)   # Usa a funcao de inserir no incio para inserir no indice 0
+        else:
+            self.__inserir_no_meio_recursivo_aux(self.ini, 0, indice, valor)   # Chama a função auxiliar
 
-    def __inserir_no_meio_recursivo_aux(self, no_atual, indice_atual, indice_alvo): # Privado/Auxiliar, RECURSIVO
+
+    def __inserir_no_meio_recursivo_aux(self, no_atual, indice_atual, indice_alvo, valor): # Privado/Auxiliar, RECURSIVO
         """
             Percorre a lista
             incrementando o indice_atual de forma recursiva até encontrar a posição correta
@@ -136,7 +148,25 @@ class ListaDuplamenteEncadeada:
             atingir o índice, o elemento deve ser inserido no fim da lista. Deve realizar a
             amarração dos 4 ponteiros envolvidos.
         """
-        pass
+        indice = indice_atual+1
+        print(indice)
+        if no_atual.proximo == None:
+            self.inserir_no_fim(valor)  # Usa a funcao de inserir no fim caso o indice desejado ultrapasse o fim da lista
+            
+        else:
+            no_atual = no_atual.proximo
+            if indice != indice_alvo:
+                self.__inserir_no_meio_recursivo_aux(no_atual, indice, indice_alvo, valor)
+
+            else:
+                # temp_proximo = no_atual
+                # temp_anterior = no_atual.anterior
+                novo = No(valor, anterior=no_atual.anterior, proximo=no_atual)
+                novo.proximo.anterior = novo
+                novo.anterior.proximo = novo
+                
+
+
 
     def exibir_lista(self): # iterativo ou recursivo
         """
@@ -180,7 +210,8 @@ class ListaDuplamenteEncadeada:
             Método público que apenas dispara a
             função recursiva de remoção.
         """
-        pass
+        no_atual = self.ini
+        self.__remover_recursivo_aux(no_atual, valor)
 
     def __remover_recursivo_aux(self, no_atual, valor): # Privado/Auxiliar - RECURSIVO
         """
@@ -188,7 +219,26 @@ class ListaDuplamenteEncadeada:
             Deve garantir que os ponteiros anterior e proximo dos nós vizinhos
             sejam costurados corretamente e tratar a atualização do inicio e fim da lista.
         """
-        pass
+        if no_atual.dado != valor:
+            if no_atual.proximo != None:
+                self.__remover_recursivo_aux(no_atual.proximo, valor)
+        else:
+            if (no_atual == self.ini) and (no_atual == self.fim):   # Caso a lista possua apenas 1 item
+                self.tam = 0
+                self.ini = None
+                self.fim = None
+            elif (no_atual == self.fim): # Caso o no atual seja o fim
+                self.fim = no_atual.anterior # fim recebe anterior
+                self.fim.proximo = None
+            elif (no_atual == self.ini):    # Caso o nó atual seja o inicio
+                self.ini = no_atual.proximo # ini recebe proximo
+                self.ini.anterior = None
+                self.__remover_recursivo_aux(no_atual.proximo, valor)
+            else:
+                no_atual.anterior.proximo = no_atual.proximo    # o proximo do anterior recebe o proximo do atual
+                no_atual.proximo.anterior = no_atual.anterior   # o anterior do proximo recebe o anterior do atual
+                self.__remover_recursivo_aux(no_atual.proximo, valor)
+
 
     def ordernar(self): # Público
         """
@@ -219,7 +269,6 @@ class ListaDuplamenteEncadeada:
 ### Testes
 
 teste = ListaDuplamenteEncadeada()
-
 #print(teste.isVazia())
 teste.inserir_no_fim('teste_fim_vazio')
 teste.inserir_no_inicio(valor='teste')
@@ -240,3 +289,27 @@ teste.exibir_lista()
 teste.inserir_no_fim('teste fim')
 print('--')
 teste.exibir_lista()
+
+
+
+teste.inserir_no_meio(indice=2, valor='teste_meio')
+
+print('--')
+teste.exibir_lista()
+
+
+teste.inserir_no_meio(indice=-1, valor='teste_meio_inicio')
+
+print('--')
+teste.exibir_lista()
+
+teste.remover_todos('teste')
+
+print('--')
+teste.exibir_lista()
+'''
+teste.inserir_no_meio(indice=3, valor='teste')
+
+print('--')
+teste.exibir_lista()
+'''
